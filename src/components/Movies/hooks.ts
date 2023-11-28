@@ -1,13 +1,15 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import { debounce } from "lodash";
 import { discoverMovies, searchMovies } from "../../api/movies";
 import { Movies } from "../../utils/interfaces";
 
 export const useMovies = (search?: string) => {
   const [movies, setMovies] = useState<Movies>();
   const [hasError, setHasError] = useState(false);
-  useEffect(() => {
-    void (async () => {
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const getMovies = useCallback(
+    debounce(async (search?: string) => {
       let movies;
       try {
         if (search) movies = await searchMovies(search);
@@ -16,8 +18,12 @@ export const useMovies = (search?: string) => {
         setHasError(true);
       }
       setMovies(movies);
-    })();
-  }, [search]);
+    }, 300),
+    []
+  );
+  useEffect(() => {
+    void getMovies(search);
+  }, [search, getMovies]);
   return { movies, hasError };
 };
 
