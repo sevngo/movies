@@ -29,8 +29,8 @@ describe("App", () => {
         </Routes>
       </MemoryRouter>
     );
-    screen.getByText("Loading...a");
-    await screen.findByText("City Lights");
+    screen.getByText("Loading...");
+    await screen.findByText(data.original_title);
     expect(axiosGet).toHaveBeenCalledWith(
       `${VITE_API_URL}/movie/${movieId}?api_key=${VITE_API_KEY}`
     );
