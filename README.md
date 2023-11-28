@@ -5,7 +5,7 @@ Ability to consult the details of a film.
 
 ## Installation
 
-in .env file add VITE_API_KEY :
+create a .env file in the root of your project with :
 
 ```
 VITE_API_KEY=
